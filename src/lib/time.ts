@@ -1,5 +1,5 @@
-function makeGetTimeBetween(rule) {
-  return (date1, date2) => {
+function makeGetTimeBetween(rule: number) {
+  return (date1: Date, date2: Date) => {
     // Convert both dates to milliseconds
     const date1_ms = date1.getTime();
     const date2_ms = date2.getTime();
