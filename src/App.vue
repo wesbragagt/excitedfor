@@ -10,37 +10,6 @@ import {
 import { getCountdownTowards } from './lib/time';
 import { startCase } from 'lodash-es';
 
-function useUnsplash({ query = 'vacation' }) {
-  const image = ref('');
-  onMounted(() => {
-    const cacheKey = query;
-    const cachedImage = localStorage.getItem(cacheKey);
-    if (!cachedImage) {
-      fetch(
-        `https://api.unsplash.com/photos/random?query=${query}&orientation=landscape`,
-        {
-          headers: {
-            Authorization:
-              'Client-ID NHvLlmnGC45IZGyG87JM7G5AbLM4N4NC-rtoVZhpJ88',
-          },
-        }
-      )
-        .then((res) => res.json())
-        .then((response) => {
-          const imageUrls = response.urls;
-          localStorage.setItem(cacheKey, JSON.stringify(imageUrls));
-          image.value = imageUrls.regular;
-        });
-    } else {
-      image.value = JSON.parse(cachedImage).regular;
-    }
-  });
-
-  return {
-    image,
-  };
-}
-
 function useInterval({ callback = () => {}, seconds = 1 }) {
   const interval = ref();
 
@@ -86,8 +55,6 @@ export default defineComponent({
       }
     });
 
-    const { image } = useUnsplash({ query: eventName });
-
     const titleInput = ref(eventName);
     const dateInput = ref(targetDate);
 
@@ -129,7 +96,6 @@ export default defineComponent({
     return {
       eventName,
       countdown,
-      image,
       startCase,
       display,
       titleInput,
@@ -158,7 +124,6 @@ export default defineComponent({
       <h4>{{ value + ' ' + startCase(key) }}</h4>
     </template>
   </div>
-  <img class="image" v-if="image" :src="image" />
 </template>
 
 <style>
